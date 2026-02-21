@@ -1,0 +1,34 @@
+# Environment
+.env
+
+# Temporary / intermediate files
+.tmp/
+
+# Google OAuth credentials
+credentials.json
+token.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/out/
+.next/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
