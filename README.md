@@ -1,6 +1,6 @@
 # Shetra
 
-Shetra is a personal safety and empowerment platform. It provides users with accessible and reliable safety tools in a single interface. The primary objective is to offer quick access to emergency services, trusted contacts, and evidence-gathering tools when needed, wrapped in a premium, modern, and immersive user interface.
+Shetra is a personal safety and empowerment platform designed specifically for women. It provides users with accessible and reliable safety tools in a single interface. The primary objective is to offer quick access to emergency services, trusted contacts, and evidence-gathering tools when needed, wrapped in a premium, modern, and immersive user interface.
 
 ## System Architecture
 
