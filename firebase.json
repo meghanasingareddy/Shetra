@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "providers": {
+      "anonymous": false,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Shetra",
+        "supportEmail": "meghanasingareddy@gmail.com"
+      }
+    }
+  }
+}

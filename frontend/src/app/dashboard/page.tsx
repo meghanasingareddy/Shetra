@@ -1,15 +1,13 @@
 ﻿"use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SOSButton from "@/components/ui/SOSButton";
 import Card from "@/components/ui/Card";
+import { useAuth } from "@/context/AuthContext";
+import { getGuardians, Guardian } from "@/lib/firestore";
 
-const savedContacts = [
-    { name: "Mom", initials: "M", color: "#FF2A5F" },
-    { name: "Dad", initials: "D", color: "#3B82F6" },
-    { name: "Priya", initials: "P", color: "#10B981" },
-    { name: "Add", initials: "+", color: "transparent", isAdd: true },
-];
+const contactColors = ["#FF2A5F", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899"];
 
 const widgets = [
     {
@@ -57,6 +55,19 @@ const widgets = [
 
 export default function DashboardPage() {
     const router = useRouter();
+    const { user } = useAuth();
+    const [guardians, setGuardians] = useState<Guardian[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (user) {
+            getGuardians(user.uid)
+                .then(setGuardians)
+                .finally(() => setLoading(false));
+        } else {
+            setLoading(false);
+        }
+    }, [user]);
 
     return (
         <div className="min-h-dvh relative bg-shetra-black overflow-hidden">
@@ -101,39 +112,51 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="flex gap-4 overflow-x-auto pb-4 -mx-5 px-5 snap-x hide-scrollbar">
-                        {savedContacts.map((contact, i) => (
-                            <button
-                                key={contact.name}
-                                onClick={() => contact.isAdd ? router.push("/dashboard/contacts/add") : undefined}
-                                className="flex flex-col items-center gap-3 cursor-pointer group snap-start animate-slide-up shrink-0 min-w-[72px]"
-                                style={{ animationDelay: `${i * 0.1}s` }}
-                            >
-                                <div
-                                    className={`
-                                        w-16 h-16 rounded-2xl flex items-center justify-center font-heading font-bold text-xl 
-                                        transition-all duration-300 shadow-md group-hover:shadow-xl group-hover:-translate-y-1
-                                        ${contact.isAdd
-                                            ? "border-2 border-dashed border-shetra-border text-shetra-text-muted bg-shetra-surface/40 hover:bg-shetra-surface hover:text-white hover:border-shetra-neon/50"
-                                            : "text-white"
-                                        }
-                                    `}
-                                    style={
-                                        !contact.isAdd
-                                            ? {
-                                                backgroundColor: contact.color + "15",
-                                                border: `1px solid ${contact.color}40`,
-                                                boxShadow: `0 4px 15px ${contact.color}20`
-                                            }
-                                            : undefined
-                                    }
+                        {loading ? (
+                            <div className="flex w-full items-center justify-center py-4">
+                                <span className="w-5 h-5 border-2 border-shetra-neon border-t-transparent rounded-full animate-spin" />
+                            </div>
+                        ) : (
+                            <>
+                                {guardians.map((contact, i) => {
+                                    const color = contactColors[i % contactColors.length];
+                                    return (
+                                        <button
+                                            key={contact.id}
+                                            onClick={() => router.push("/dashboard/contacts")}
+                                            className="flex flex-col items-center gap-3 cursor-pointer group snap-start animate-slide-up shrink-0 min-w-[72px]"
+                                            style={{ animationDelay: `${i * 0.1}s` }}
+                                        >
+                                            <div
+                                                className="w-16 h-16 rounded-2xl flex items-center justify-center font-heading font-bold text-xl transition-all duration-300 shadow-md group-hover:shadow-xl group-hover:-translate-y-1 text-white"
+                                                style={{
+                                                    backgroundColor: color + "15",
+                                                    border: `1px solid ${color}40`,
+                                                    boxShadow: `0 4px 15px ${color}20`
+                                                }}
+                                            >
+                                                {contact.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <span className="text-sm font-heading font-medium text-shetra-text-muted group-hover:text-shetra-light transition-colors max-w-[72px] truncate px-1">
+                                                {contact.name}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                                <button
+                                    onClick={() => router.push("/dashboard/contacts/add")}
+                                    className="flex flex-col items-center gap-3 cursor-pointer group snap-start animate-slide-up shrink-0 min-w-[72px]"
+                                    style={{ animationDelay: `${guardians.length * 0.1}s` }}
                                 >
-                                    {contact.initials}
-                                </div>
-                                <span className="text-sm font-heading font-medium text-shetra-text-muted group-hover:text-shetra-light transition-colors">
-                                    {contact.name}
-                                </span>
-                            </button>
-                        ))}
+                                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-heading font-bold text-xl transition-all duration-300 shadow-md group-hover:shadow-xl group-hover:-translate-y-1 border-2 border-dashed border-shetra-border text-shetra-text-muted bg-shetra-surface/40 hover:bg-shetra-surface hover:text-white hover:border-shetra-neon/50">
+                                        +
+                                    </div>
+                                    <span className="text-sm font-heading font-medium text-shetra-text-muted group-hover:text-shetra-light transition-colors">
+                                        Add
+                                    </span>
+                                </button>
+                            </>
+                        )}
                     </div>
                 </section>
 
