@@ -1,4 +1,5 @@
 ﻿import BottomNav from "@/components/ui/BottomNav";
+import DesktopSidebar from "@/components/ui/DesktopSidebar";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export default function DashboardLayout({
@@ -8,9 +9,12 @@ export default function DashboardLayout({
 }) {
     return (
         <ProtectedRoute>
-            <div className="mx-auto min-h-dvh w-full max-w-[430px] relative flex flex-col bg-shetra-black">
-                <div className="flex-1 pb-20">{children}</div>
-                <BottomNav />
+            <div className="flex min-h-dvh w-full bg-shetra-black">
+                <DesktopSidebar />
+                <div className="flex-1 relative flex flex-col w-full max-w-7xl mx-auto">
+                    <div className="flex-1 pb-20 md:pb-8">{children}</div>
+                    <BottomNav />
+                </div>
             </div>
         </ProtectedRoute>
     );

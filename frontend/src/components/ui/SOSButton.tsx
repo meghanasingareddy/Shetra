@@ -1,26 +1,41 @@
 ﻿"use client";
 
 interface SOSButtonProps {
-    size?: "sm" | "lg";
+    size?: "sm" | "lg" | "xl";
     onClick?: () => void;
+    className?: string;
 }
 
-export default function SOSButton({ size = "lg", onClick }: SOSButtonProps) {
+export default function SOSButton({ size = "lg", onClick, className = "" }: SOSButtonProps) {
     const sizeClasses =
-        size === "lg"
-            ? "w-36 h-36 text-3xl"
-            : "w-20 h-20 text-base";
+        size === "xl"
+            ? "w-48 h-48 text-5xl"
+            : size === "lg"
+                ? "w-36 h-36 text-3xl"
+                : "w-20 h-20 text-base";
+
+    const outerGlowClasses =
+        size === "xl"
+            ? "w-72 h-72"
+            : size === "lg"
+                ? "w-52 h-52"
+                : "w-28 h-28";
+
+    const innerGlowClasses =
+        size === "xl"
+            ? "w-60 h-60"
+            : size === "lg"
+                ? "w-44 h-44"
+                : "w-24 h-24";
 
     return (
-        <div className="relative flex items-center justify-center">
+        <div className={`relative flex items-center justify-center ${className}`}>
             {/* Outer glow rings */}
             <div
-                className={`absolute rounded-full bg-shetra-neon/5 animate-sos-pulse ${size === "lg" ? "w-52 h-52" : "w-28 h-28"
-                    }`}
+                className={`absolute rounded-full bg-shetra-neon/5 animate-sos-pulse ${outerGlowClasses}`}
             />
             <div
-                className={`absolute rounded-full bg-shetra-neon/8 ${size === "lg" ? "w-44 h-44" : "w-24 h-24"
-                    }`}
+                className={`absolute rounded-full bg-shetra-neon/8 ${innerGlowClasses}`}
             />
             {/* Main button */}
             <button

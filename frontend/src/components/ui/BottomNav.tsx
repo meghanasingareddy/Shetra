@@ -56,7 +56,7 @@ export default function BottomNav() {
     const pathname = usePathname();
 
     return (
-        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50">
+        <nav className="fixed md:hidden bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50">
             <div className="bg-shetra-dark/95 backdrop-blur-lg border-t border-shetra-border px-2 pb-[env(safe-area-inset-bottom)]">
                 <div className="flex items-center justify-around h-16 relative">
                     {navItems.map((item) => {
